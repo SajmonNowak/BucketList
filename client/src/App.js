@@ -1,18 +1,25 @@
-import React, {useEffect} from "react"
+import {
+  Box,
+  Center,
+  Container,
+  FormControl,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import LandingPage from "./pages/LandingPage";
 
 const App = () => {
-  const [data, setData] = React.useState(null);
-
-  useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
 
   return (
-    <div >
-        <p>{!data ? "Loading..." : data}</p>
-    </div>
+    <Container maxW="100vw" p="0" >
+      <LandingPage />
+    </Container>
   );
 };
 
