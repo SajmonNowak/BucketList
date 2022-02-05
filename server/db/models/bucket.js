@@ -6,7 +6,7 @@ const bucketSchema = new Mongoose.Schema({
         required: true,
     } ,
     descr: String,
-    date_created: {
+    dateCreated: {
         type: Date,
         required: true,
     },
