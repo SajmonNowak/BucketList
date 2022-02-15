@@ -2,8 +2,9 @@ import { Container } from "@chakra-ui/react";
 import React from "react";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignUpPage from "./pages/SignUpPage";
+import Register from "./pages/Register";
 import SignUpSucessPage from "./pages/SignUpSucessPage";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -11,8 +12,9 @@ const App = () => {
       <Container maxW="100vw" p="0">
         <Routes>
           <Route exact element={<LandingPage />} path="/" />
-          <Route exact element={<SignUpPage />} path="/sign-up" />
-          <Route element={<SignUpSucessPage />} path="/sign-up/sucess" />
+          <Route element={<Dashboard />} path="/home" />
+          <Route exact element={<Register />} path="/register" />
+          <Route element={<SignUpSucessPage />} path="/register/sucess" />
         </Routes>
       </Container>
     </Router>

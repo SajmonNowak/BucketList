@@ -1,6 +1,11 @@
 import { Mongoose } from "mongoose";
 
 const bucketSchema = new Mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectID,
+        required: true,
+        ref: User
+    },
     heading:{
         type: String,
         required: true,
@@ -11,7 +16,10 @@ const bucketSchema = new Mongoose.Schema({
         required: true,
     },
     date_finished: Date,
-    category: String, 
+    category: String
+},
+{
+    timestamps: true
 })
 
 

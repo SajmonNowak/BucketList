@@ -69,7 +69,7 @@ const Login = () => {
             >
               Log In
             </Button>
-            <Link to="/sign-up" style={{ width: "100%" }}>
+            <Link to="/register" style={{ width: "100%" }}>
               <Button width="100%" mt="5px">
                 Create new Account
               </Button>

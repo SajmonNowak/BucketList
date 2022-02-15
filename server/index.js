@@ -4,7 +4,7 @@ const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("./db/models/user");
+const User = require("./models/user");
 
 require("dotenv").config();
 
@@ -20,45 +20,26 @@ mongoose.connect(process.env.MONGODB_URL, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
-
-passport.use(
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
-      if (err) { 
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false, { message: "Incorrect username" });
-      }
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    });
-  })
-);
+app.use("/api/bucket", require("./routes/bucketRoutes"))
+app.use("/api/users", require("./routes/userRoutes"))
 
 
-app.post("/sign-up", (req, res) => {
+
+// app.post("/register", (req, res) => {
   
-  const user = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password,
-  }).save((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
+//   const user = new User({
+//     firstName: req.body.firstName,
+//     lastName: req.body.lastName,
+//     email: req.body.email,
+//     username: req.body.username,
+//     password: req.body.password,
+//   }).save((err) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.redirect("/");
+//   });
+// });
 
 
 

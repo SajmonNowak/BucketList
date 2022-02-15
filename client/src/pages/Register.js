@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { BsArrowReturnLeft } from "react-icons/bs";
 
-const SignUpPage = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const {
@@ -26,7 +26,7 @@ const SignUpPage = () => {
 
   function onSubmit(values) {
     axios
-      .post("/sign-up", {
+      .post("/api/register", {
         firstName: values.firstName,
         lastName: values.surname,
         email: values.email,
@@ -34,7 +34,7 @@ const SignUpPage = () => {
         password: values.password,
       })
       .then(function (response) {
-        navigate("/sign-up/sucess");
+        navigate("/register/sucess");
       })
       .catch(function (error) {
         console.log(error);
@@ -136,4 +136,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default Register;
