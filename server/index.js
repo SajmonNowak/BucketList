@@ -25,12 +25,31 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
+      if (err) { 
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
+      if (user.password !== password) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+      return done(null, user);
+    });
+  })
+);
+
+
 app.post("/sign-up", (req, res) => {
-  console.log(req.body);
+  
   const user = new User({
     firstName: req.body.firstName,
-    surname: req.body.surname,
+    lastName: req.body.lastName,
     email: req.body.email,
+    username: req.body.username,
     password: req.body.password,
   }).save((err) => {
     if (err) {
@@ -39,6 +58,9 @@ app.post("/sign-up", (req, res) => {
     res.redirect("/");
   });
 });
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);

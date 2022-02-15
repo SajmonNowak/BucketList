@@ -28,8 +28,9 @@ const SignUpPage = () => {
     axios
       .post("/sign-up", {
         firstName: values.firstName,
-        surname: values.surname,
+        lastName: values.surname,
         email: values.email,
+        username: values.username,
         password: values.password,
       })
       .then(function (response) {
@@ -73,6 +74,7 @@ const SignUpPage = () => {
                 minLength: { value: 2, message: "Please enter a name" },
               })}
             />
+            
             <FormLabel htmlFor="eMail" mt={4}>
               E-Mail Adress
             </FormLabel>
@@ -83,6 +85,16 @@ const SignUpPage = () => {
               {...register("email", {
                 required: "This is required",
                 minLength: { value: 3, message: "Minimum length should be 3" },
+              })}
+            />
+            <FormLabel mt={4} htmlFor="username">Username</FormLabel>
+            <Input
+              id="username"
+              placeholder="Username"
+              type="text"
+              {...register("username", {
+                required: "This is required",
+                minLength: { value: 3, message: "Username require at least 3 characters." },
               })}
             />
             <FormLabel htmlFor="password" mt={4}>

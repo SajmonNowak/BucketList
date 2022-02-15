@@ -13,9 +13,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  surname: {
+  lastName: {
     type: String,
     required: true,
+  },
+  username: {
+    type: String,
+    required: true
   },
   // dateCreated: {
   //     type: Date,
