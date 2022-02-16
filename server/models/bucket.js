@@ -1,28 +1,27 @@
-import { Mongoose } from "mongoose";
+const mongoose = require("mongoose");
+const User = require("../models/user");
 
-const bucketSchema = new Mongoose.Schema({
+const bucketSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectID,
-        required: true,
-        ref: User
+      type: mongoose.Schema.Types.ObjectID,
+      required: true,
+      ref: User,
     },
-    heading:{
-        type: String,
-        required: true,
-    } ,
+    name: {
+      type: String,
+      required: true,
+    },
     descr: String,
-    dateCreated: {
-        type: Date,
-        required: true,
-    },
+    images: String,
     date_finished: Date,
-    category: String
-},
-{
-    timestamps: true
-})
+    category: String,
+  },
+  {
+    timestamps: true,
+  }
+);
 
-
-const Bucket = mongoose.model("Bucket", bucketSchema)
+const Bucket = mongoose.model("Bucket", bucketSchema);
 
 module.exports = Bucket;
