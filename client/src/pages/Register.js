@@ -26,7 +26,7 @@ const Register = () => {
 
   function onSubmit(values) {
     axios
-      .post("/api/register", {
+      .post("/api/users", {
         firstName: values.firstName,
         lastName: values.surname,
         email: values.email,
