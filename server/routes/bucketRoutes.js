@@ -6,10 +6,9 @@ const {
   deleteBucket,
 } = require("../controllers/bucketController");
 const router = express.Router();
+const {protect} = require("../middleware/authMiddleware")
 
-router.get("/", getBuckets);
-router.post("/", setBucket);
-router.put("/", updateBucket);
-router.delete("/", deleteBucket);
+router.route("/").get(protect,getBuckets).post(protect, setBucket);
+router.route("/:id").put(protect, updateBucket).delete(protect, deleteBucket);
 
 module.exports = router;

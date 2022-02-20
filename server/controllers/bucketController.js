@@ -8,6 +8,8 @@ const User = require("../models/user");
 // @access  Private
 
 const getBuckets = asyncHandler(async (req, res) => {
+  console.log(req.user.id);
+
   const buckets = await Bucket.find({ user: req.user.id });
 
   res.status(200).json(buckets);
@@ -44,19 +46,25 @@ const updateBucket = asyncHandler(async (req, res) => {
     throw new Error("Item not found");
   }
 
-  if (!req.user) {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
     res.status(401);
     throw new Error("User not found");
   }
 
-  if (bucket.user.toString() !== req.user.id) {
+  if (bucket.user.toString() !== user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
 
-  const updatedBucket = await Bucket.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const updatedBucket = await Bucket.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+    }
+  );
 
   res.status(200).json(updatedBucket);
 });
@@ -65,31 +73,33 @@ const updateBucket = asyncHandler(async (req, res) => {
 // @route   DELETE /api/buckets/:id
 // @access  Private
 const deleteBucket = asyncHandler(async (req, res) => {
-    const bucket = await Bucket.findById(req.params.id)
-  
-    if (!bucket) {
-      res.status(400)
-      throw new Error('Bucket not found')
-    }
-  
-    if (!req.user) {
-      res.status(401)
-      throw new Error('User not found')
-    }
-  
-    if (Bucket.user.toString() !== req.user.id) {
-      res.status(401)
-      throw new Error('User not authorized')
-    }
-  
-    await Bucket.remove()
-  
-    res.status(200).json({ id: req.params.id })
-  })
-  
-  module.exports = {
-    getBuckets,
-    setBucket,
-    updateBucket,
-    deleteBucket,
+  const bucket = await Bucket.findById(req.params.id);
+
+  if (!bucket) {
+    res.status(400);
+    throw new Error("Bucket not found");
   }
+
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
+
+  if (bucket.user.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized");
+  }
+
+  await bucket.remove();
+
+  res.status(200).json({ id: req.params.id });
+});
+
+module.exports = {
+  getBuckets,
+  setBucket,
+  updateBucket,
+  deleteBucket,
+};
