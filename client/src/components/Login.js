@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Flex,
@@ -8,30 +8,54 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { login, reset } from "../features/auth/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   function onSubmit(values) {
-    axios
-      .post("/sign-up", {
-        email: values.email,
-        password: values.password,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const data = {
+      email: values.email,
+      password: values.password,
+    };
+
+    dispatch(login(data));
+
+    // axios
+    //   .post("/sign-up", {
+    //     email: values.email,
+    //     password: values.password,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   }
+
+  useEffect(() => {
+    if (user) {
+      //navigate("/register/sucess");
+    }
+
+    dispatch(reset())
+  }, [user , navigate]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -41,7 +65,7 @@ const Login = () => {
           id="eMail"
           placeholder="E-Mail@adress.com"
           type="text"
-          {...register("eMail", {
+          {...register("email", {
             required: "This is required",
             minLength: { value: 3, message: "Minimum length should be 3" },
           })}
