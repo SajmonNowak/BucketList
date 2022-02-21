@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,37 +8,59 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Spinner,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { BsArrowReturnLeft } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import { register, reset } from "../features/auth/authSlice";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const {
     handleSubmit,
-    register,
+    register: formRegister,
     formState: { errors, isSubmitting },
   } = useForm();
 
   function onSubmit(values) {
-    axios
-      .post("/api/users", {
-        firstName: values.firstName,
-        lastName: values.surname,
-        email: values.email,
-        username: values.username,
-        password: values.password,
-      })
-      .then(function (response) {
-        navigate("/register/sucess");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+    const userData = {
+      firstName: values.firstName,
+      lastName: values.surname,
+      email: values.email,
+      username: values.username,
+      password: values.password,
+    };
+
+    dispatch(register(userData));
+  }
+
+  useEffect(() => {
+    if (isError) {
+      toast({ title: "Error", description:"Try again!" });
+    }
+
+    if (isSuccess) {
+      navigate("/register/sucess");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+
+  if(isLoading){
+    return <Spinner />
   }
 
   return (
@@ -57,7 +79,7 @@ const Register = () => {
               id="firstName"
               placeholder="First Name"
               type="text"
-              {...register("firstName", {
+              {...formRegister("firstName", {
                 required: "This is required",
                 minLength: { value: 2, message: "Please enter a name" },
               })}
@@ -69,12 +91,12 @@ const Register = () => {
               id="surname"
               placeholder="Last Name"
               type="text"
-              {...register("surname", {
+              {...formRegister("surname", {
                 required: "This is required",
                 minLength: { value: 2, message: "Please enter a name" },
               })}
             />
-            
+
             <FormLabel htmlFor="eMail" mt={4}>
               E-Mail Adress
             </FormLabel>
@@ -82,19 +104,24 @@ const Register = () => {
               id="eMail"
               placeholder="E-Mail@adress.com"
               type="email"
-              {...register("email", {
+              {...formRegister("email", {
                 required: "This is required",
                 minLength: { value: 3, message: "Minimum length should be 3" },
               })}
             />
-            <FormLabel mt={4} htmlFor="username">Username</FormLabel>
+            <FormLabel mt={4} htmlFor="username">
+              Username
+            </FormLabel>
             <Input
               id="username"
               placeholder="Username"
               type="text"
-              {...register("username", {
+              {...formRegister("username", {
                 required: "This is required",
-                minLength: { value: 3, message: "Username require at least 3 characters." },
+                minLength: {
+                  value: 3,
+                  message: "Username require at least 3 characters.",
+                },
               })}
             />
             <FormLabel htmlFor="password" mt={4}>
@@ -104,7 +131,7 @@ const Register = () => {
               id="password"
               placeholder="Password"
               type="password"
-              {...register("password")}
+              {...formRegister("password")}
             ></Input>
             <FormErrorMessage>
               {errors.name && errors.name.message}
