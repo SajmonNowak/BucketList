@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
 
@@ -35,27 +34,15 @@ const Login = () => {
     };
 
     dispatch(login(data));
-
-    // axios
-    //   .post("/sign-up", {
-    //     email: values.email,
-    //     password: values.password,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   }
 
   useEffect(() => {
-    if (user) {
-      //navigate("/register/sucess");
+    if(user || isSuccess){
+      navigate("/")
     }
 
     dispatch(reset())
-  }, [user , navigate]);
+  }, [user , isSuccess, navigate, dispatch]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

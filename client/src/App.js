@@ -11,8 +11,8 @@ const App = () => {
     <Router>
       <Container maxW="100vw" p="0">
         <Routes>
-          <Route exact element={<LandingPage />} path="/" />
-          <Route element={<Dashboard />} path="/home" />
+          <Route element={<Dashboard />} path="/" />
+          <Route element={<LandingPage />} path="/login" />
           <Route exact element={<Register />} path="/register" />
           <Route element={<SignUpSucessPage />} path="/register/sucess" />
         </Routes>
