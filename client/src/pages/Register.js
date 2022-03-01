@@ -34,7 +34,6 @@ const Register = () => {
   } = useForm();
 
   function onSubmit(values) {
-
     const userData = {
       firstName: values.firstName,
       lastName: values.surname,
@@ -48,7 +47,7 @@ const Register = () => {
 
   useEffect(() => {
     if (isError) {
-      toast({ title: "Error", description:"Try again!" });
+      toast({ title: "Error", description: "Try again!" });
     }
 
     if (isSuccess) {
@@ -58,9 +57,8 @@ const Register = () => {
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-
-  if(isLoading){
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (

@@ -28,26 +28,22 @@ export const register = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("auth/logout",
-  async () =>{
-    await authService.logout()
-  }
-)
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
 
-export const login = createAsyncThunk("auth/login",
-async (data, thunkAPI) => {
-  try{
-    return await authService.login(data)
-  }
-  catch (error){
+export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
+  try {
+    return await authService.login(data);
+  } catch (error) {
     const message =
-        (error.response && error.reponse.data && error.reponse.data.message) ||
-        error.message ||
-        error.toString();
+      (error.response && error.reponse.data && error.reponse.data.message) ||
+      error.message ||
+      error.toString();
 
-      return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(message);
   }
-})
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -92,7 +88,7 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-      })
+      });
   },
 });
 

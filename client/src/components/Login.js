@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
+import ChakraInput from "./ChakraInput";
 
 const Login = () => {
+  const [errorMessage, setErrorMessage] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,71 +23,79 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isError, isSuccess } = useSelector((state) => state.auth);
 
-  function onSubmit(values) {
+  const onSubmit = (values) => {
     const data = {
       email: values.email,
       password: values.password,
     };
 
     dispatch(login(data));
-  }
+  };
 
   useEffect(() => {
-    if(user || isSuccess){
-      navigate("/")
+    if (user || isSuccess) {
+      navigate("/");
     }
 
-    dispatch(reset())
-  }, [user , isSuccess, navigate, dispatch]);
+    if (isError) {
+      setErrorMessage("Wrong e-mail or password. Try again.");
+    }
+
+    dispatch(reset());
+  }, [user, isSuccess, isError, navigate, dispatch]);
+
+  const checkIfEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={errors.name}>
-        <FormLabel htmlFor="eMail">E-Mail Adress</FormLabel>
-        <Input
-          id="eMail"
-          placeholder="E-Mail@adress.com"
-          type="text"
-          {...register("email", {
-            required: "This is required",
-            minLength: { value: 3, message: "Minimum length should be 3" },
-          })}
+      <VStack spacing="10px">
+        <ChakraInput
+          label="E-Mail"
+          id="email"
+          placeholder="Max@mustermail.com"
+          register={register}
+          errors={errors}
+          validation={{
+            isEmail: (v) => checkIfEmail(v) || "Player enter a real E-Mail",
+          }}
         />
-        <FormLabel htmlFor="password" mt={4}>
-          Password
-        </FormLabel>
-        <Input
+        <ChakraInput
+          label="Password"
           id="password"
-          placeholder="Password"
-          type="password"
-          {...register("password")}
-        ></Input>
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
-        <Flex w="100%">
-          <VStack w="100%">
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={isSubmitting}
-              type="submit"
-              width="100%"
-            >
-              Log In
+          placeholder="password"
+          register={register}
+          errors={errors}
+        />
+      </VStack>
+      <Box padding="10px 0">
+        <Text color="red">{errorMessage}</Text>
+      </Box>
+      <Flex w="100%">
+        <VStack w="100%">
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+            width="100%"
+          >
+            Log In
+          </Button>
+          <Link to="/register" style={{ width: "100%" }}>
+            <Button width="100%" mt="5px">
+              Create new Account
             </Button>
-            <Link to="/register" style={{ width: "100%" }}>
-              <Button width="100%" mt="5px">
-                Create new Account
-              </Button>
-            </Link>
-          </VStack>
-        </Flex>
-      </FormControl>
+          </Link>
+        </VStack>
+      </Flex>
     </form>
   );
 };
