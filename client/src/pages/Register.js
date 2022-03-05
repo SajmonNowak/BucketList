@@ -8,7 +8,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  Spinner,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -57,9 +56,6 @@ const Register = () => {
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
 
   return (
     <Container maxW={"400px"} h="100vh">

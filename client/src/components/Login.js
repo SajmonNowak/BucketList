@@ -71,6 +71,7 @@ const Login = () => {
           label="Password"
           id="password"
           placeholder="password"
+          type="password"
           register={register}
           errors={errors}
         />
