@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack } from "@chakra-ui/react";
 import Login from "../components/Login";
 import Emoji from "../components/Emoji";
 
@@ -60,7 +54,7 @@ const LandingPage = () => {
       </Box>
       <Box h="100%" w="40%">
         <Center h="100%">
-            <Login />
+          <Login />
         </Center>
       </Box>
     </HStack>
