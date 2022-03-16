@@ -40,6 +40,7 @@ const Header = () => {
         />
         <IconButton
           as={AiOutlineLogout}
+          onClick = {onLogout}
           w="35px"
           h="35px"
           bgColor="transparent"

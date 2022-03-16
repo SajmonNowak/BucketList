@@ -4,11 +4,12 @@ import App from "./App";
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import store from "./redux/store";
 import {Provider} from "react-redux"
+import theme from "./style/theme"
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <CSSReset />
       <Provider store={store}>
       <App />
