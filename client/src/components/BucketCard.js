@@ -2,8 +2,11 @@ import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import React from "react";
 import placeholder from "../files/madeira.jpg";
 
-const BucketCard = ({ bucketData }) => {
-  const openBucket = () => {};
+const BucketCard = ({ bucketData, setModalBucket }) => {
+
+  const openBucket = () => {
+    setModalBucket(bucketData);
+  };
 
   return (
     <Flex position="relative" flexDir="column" onClick={openBucket} width="200px" height="150px" borderRadius="20px" margin="20px">
