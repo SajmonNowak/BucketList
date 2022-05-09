@@ -24,7 +24,7 @@ const SignUpSucessPage = () => {
           You can return and log in with your new Account :)
         </Text>
         <Center mt={12}>
-          <Link as={ReactLink} to="/">
+          <Link as={ReactLink} to="/app">
             <Button leftIcon={<BsArrowReturnLeft />}>Return</Button>
           </Link>
         </Center>
